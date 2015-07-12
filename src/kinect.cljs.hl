@@ -1,0 +1,27 @@
+(ns dimo.kinect
+  (:require [cljs.core.async :as async :refer [<! >! chan sliding-buffer]])
+  (:require-macros [cljs.core.async.macros :refer [go]]))
+
+; Connects to already-running websocket on port 1337
+
+(def ws (js/WebSocket. "ws://localhost:1337"))
+(set! (.-binaryType ws) "arraybuffer")
+(set! (.-onopen ws) #(js/console.log "WebSocket connection established."))
+(set! (.-onclose ws) #(js/console.log "WebSocket connection closed."))
+
+(def ws-chan (chan (sliding-buffer 10)))
+
+; a cell to hold the value of the depth-map from the Kinect
+(defc depth-map nil)
+
+; when a message is put on the WebSocket channel,
+; depth-map is updated with the data from the Kinect
+(go
+  (loop []
+    (let [msg (<! ws-chan)]
+      (reset! depth-map (js/Uint16Array. (.-data msg)))
+      (recur))))
+
+; set WebSocket message handler so that it puts messages on the channel for handling by the loop above
+(set! (.-onmessage ws) #(go (>! ws-chan %))) 
+

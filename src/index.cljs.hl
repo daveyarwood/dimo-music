@@ -1,0 +1,28 @@
+(page "index.html"
+  (:require [dimo.sound :as sound :refer (play-note)]
+            [dimo.kinect :refer (depth-map)]))
+
+(defc= depth-seq
+  (when depth-map (array-seq depth-map)))
+
+(defc= average-depth
+  (when depth-seq
+    (/ (reduce + depth-seq) (count depth-seq))))
+
+(defc= closest-depth
+  (when depth-seq
+    (apply min (filter (partial not= 2047) depth-seq))))
+
+(defc= reverse-depth
+  (when closest-depth
+    (- 1100 closest-depth)))
+
+(html
+  (head
+    (title "♫♫♫•dimo•music•♫♫♫"))
+  (body
+    (h1 "dimo music!")
+    (button :on-click #(play-note @reverse-depth) "click")
+    (p (text "average depth: ~{average-depth}"))
+    (p (text "closest depth: ~{closest-depth}"))
+    (p (text "2047 - closest depth: ~{reverse-depth}"))))
