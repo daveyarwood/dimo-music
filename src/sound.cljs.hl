@@ -1,17 +1,7 @@
 (ns dimo.sound
-  (:require [hum.core :as hum]))
+  (:require [mantra.core :as m :refer (osc)]))
 
-(def ctx (hum/create-context))
-(def sine (hum/create-osc ctx :square))
-(def vcf (hum/create-biquad-filter ctx))
-(def out (hum/create-gain ctx))
-(hum/connect sine vcf out)
-(hum/start-osc sine)
-(hum/connect-output out)
+(def sq (osc :type :square))
 
 (defn play-note [freq]
-  (hum/note-on out sine freq)
-  (js/setTimeout #(hum/note-off out) 1000))
-
-(defn osc-cell []
-  )
+  (m/play-note sq {:pitch freq :duration 1000}))

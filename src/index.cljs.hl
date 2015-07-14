@@ -25,4 +25,10 @@
     (button :on-click #(play-note @reverse-depth) "click")
     (p (text "average depth: ~{average-depth}"))
     (p (text "closest depth: ~{closest-depth}"))
-    (p (text "2047 - closest depth: ~{reverse-depth}"))))
+    (p (text "2047 - closest depth: ~{reverse-depth}"))
+    
+    (hr)
+    
+    (h1 "sandbox")
+    (button :on-click #(play-note (+ 100 (rand-int 3000))) "random note")
+    #_(button :on-click #(+ :todo) "off")))
