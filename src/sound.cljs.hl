@@ -1,7 +1,11 @@
 (ns dimo.sound
   (:require [mantra.core :as m :refer (osc)]))
 
+; not really using this namespace at the moment
+
 (def sq (osc :type :square))
 
 (defn play-note [freq]
-  (m/play-note sq {:pitch freq :duration 1000}))
+  (m/play-note sq {:pitch freq}))
+
+(def stop-osc m/stop-osc)
