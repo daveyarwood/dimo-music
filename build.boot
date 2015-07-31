@@ -4,6 +4,7 @@
   :dependencies   '[[org.clojure/clojure       "1.7.0"]
                     [org.clojure/clojurescript "0.0-3308"]
                     [org.clojure/core.async    "0.1.346.0-17112a-alpha"]
+                    [servant                   "0.1.3"]
                     [adzerk/boot-cljs-repl     "0.1.9"]
                     [adzerk/boot-reload        "0.3.1"]
                     [pandeiro/boot-http        "0.6.2"]
@@ -28,5 +29,5 @@
         (speak)
         (hoplon :pretty-print true)
         (reload)
-        (cljs :source-map true)
+        (cljs :source-map true :optimizations :simple)
         (serve)))
