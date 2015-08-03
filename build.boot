@@ -29,5 +29,5 @@
         (speak)
         (hoplon :pretty-print true)
         (reload)
-        (cljs :source-map true :optimizations :simple)
+        (cljs :source-map true :optimizations :none)
         (serve)))

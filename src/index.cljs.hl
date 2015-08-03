@@ -1,62 +1,54 @@
 (page "index.html"
-  (:require [mantra.core     :refer (osc play-note stop-osc stop-all-oscs)]
-            [dimo.kinect     :refer (depth-map-cell)]
-            [cljs.core.async :as async :refer (<! >!)]
-            [servant.core    :as servant]
-            [servant.worker  :as worker]))
+  (:require [mantra.core :refer (osc play-note stop-osc stop-all-oscs)]
+            [dimo.kinect :refer (depth-map-cell)]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn window-load []
-  (def depth-map (depth-map-cell))
+(def depth-map (depth-map-cell))
 
-  (defc= average-depth
-    (when depth-map
-      (/ (reduce + depth-map) (count depth-map))))
+(defc= average-depth
+  (when depth-map
+    (/ (reduce + depth-map) (count depth-map))))
 
-  (defc= closest-depth
-    (when depth-map
-      (apply min (filter (partial not= 2047) depth-map))))
+(defc= closest-depth
+  (when depth-map
+    (apply min (filter (partial not= 2047) depth-map))))
 
-  (defc= reverse-depth
-    (when closest-depth
-      (- 1100 closest-depth)))
+(defc= reverse-depth
+  (when closest-depth
+    (- 1100 closest-depth)))
 
-  (def sq (osc :type :square))
-  (def tri (osc :type :triangle))
+(def sq (osc :type :square))
+(def tri (osc :type :triangle))
 
-  (html
-    (head
-      (title "♫♫♫•dimo•music•♫♫♫"))
-    (body
-      (h1 "dimo music!")
-      (button :click #(play-note tri {:pitch @reverse-depth}) "click")
-      (p (text "average depth: ~{average-depth}"))
-      (p (text "closest depth: ~{closest-depth}"))
-      (p (text "2047 - closest depth: ~{reverse-depth}"))
+(html
+  (head
+    (title "♫♫♫•dimo•music•♫♫♫"))
+  (body
+    (h1 "dimo music!")
+    (button :click #(play-note tri {:pitch @reverse-depth}) "click")
+    (p (text "average depth: ~{average-depth}"))
+    (p (text "closest depth: ~{closest-depth}"))
+    (p (text "2047 - closest depth: ~{reverse-depth}"))
 
-      (hr)
+    (hr)
 
-      (h1 "sandbox")
+    (h1 "sandbox")
 
-      (p
-       (text "square:")
-       (button :on-click #(play-note sq {:pitch (+ 100 (rand-int 3000))
+    (p
+     (text "square:")
+     (button :on-click #(play-note sq {:pitch (+ 100 (rand-int 3000))
+                                       :duration 1000}) 
+             "random note")
+     (button :on-click #(stop-osc sq) "off"))
+
+    (p 
+      (text "triangle:")
+      (button :on-click #(play-note tri {:pitch (+ 100 (rand-int 3000))
                                          :duration 1000}) 
-               "random note")
-       (button :on-click #(stop-osc sq) "off"))
+              "random note")
+      (button :on-click #(stop-osc tri) "off"))
 
-      (p 
-        (text "triangle:")
-        (button :on-click #(play-note tri {:pitch (+ 100 (rand-int 3000))
-                                           :duration 1000}) 
-                "random note")
-        (button :on-click #(stop-osc tri) "off"))
+    (p 
+      (button :on-click stop-all-oscs "stop all oscs"))))
 
-      (p 
-        (button :on-click stop-all-oscs "stop all oscs"))))
-)
-
-(if (servant/webworker?)
-  (worker/bootstrap)
-  (set! (.-onload js/window) window-load))
