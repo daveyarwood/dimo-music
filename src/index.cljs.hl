@@ -41,12 +41,16 @@
 
       (p
        (text "square:")
-       (button :on-click #(play-note sq {:pitch (+ 100 (rand-int 3000))}) "random note")
+       (button :on-click #(play-note sq {:pitch (+ 100 (rand-int 3000))
+                                         :duration 1000}) 
+               "random note")
        (button :on-click #(stop-osc sq) "off"))
 
       (p 
         (text "triangle:")
-        (button :on-click #(play-note tri {:pitch (+ 100 (rand-int 3000))}) "random note")
+        (button :on-click #(play-note tri {:pitch (+ 100 (rand-int 3000))
+                                           :duration 1000}) 
+                "random note")
         (button :on-click #(stop-osc tri) "off"))
 
       (p 
