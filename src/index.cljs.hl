@@ -1,5 +1,5 @@
 (page "index.html"
-  (:require [mantra.core :refer (osc play-note stop-osc stop-all-oscs)]
+  (:require [mantra.core :as m]
             [dimo.kinect :refer (depth-map-cell)]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -18,15 +18,15 @@
   (when closest-depth
     (- 1100 closest-depth)))
 
-(def sq (osc :type :square))
-(def tri (osc :type :triangle))
+(def sq (m/osc :type :square))
+(def tri (m/osc :type :triangle))
 
 (html
   (head
     (title "♫♫♫•dimo•music•♫♫♫"))
   (body
     (h1 "dimo music!")
-    (button :click #(play-note tri {:pitch @reverse-depth}) "click")
+    (button :click #(m/play-note tri {:pitch @reverse-depth}) "click")
     (p (text "average depth: ~{average-depth}"))
     (p (text "closest depth: ~{closest-depth}"))
     (p (text "2047 - closest depth: ~{reverse-depth}"))
@@ -36,19 +36,27 @@
     (h1 "sandbox")
 
     (p
-     (text "square:")
-     (button :on-click #(play-note sq {:pitch (+ 100 (rand-int 3000))
+      (text "square:")
+      (button :click #(m/play-note sq {:pitch (+ 100 (rand-int 3000))
                                        :duration 1000}) 
-             "random note")
-     (button :on-click #(stop-osc sq) "off"))
+              "random note")
+      (button :click #(m/stop-osc sq) "off"))
 
     (p 
       (text "triangle:")
-      (button :on-click #(play-note tri {:pitch (+ 100 (rand-int 3000))
-                                         :duration 1000}) 
+      (button :click #(m/play-note tri {:pitch (+ 100 (rand-int 3000))
+                                        :duration 1000}) 
               "random note")
-      (button :on-click #(stop-osc tri) "off"))
+      (button :click #(m/play-notes tri [{:pitch 100 :duration 1000}
+                                         {:duration 250}
+                                         {:pitch 200 :duration 1000}
+                                         {:duration 250}
+                                         {:pitch 300 :duration 1000}
+                                         {:duration 250}
+                                         {:pitch 400 :duration 1000}])
+              "note sequence")
+      (button :click #(m/stop-osc tri) "off"))
 
     (p 
-      (button :on-click stop-all-oscs "stop all oscs"))))
+      (button :click m/stop-all-oscs "stop all oscs"))))
 
