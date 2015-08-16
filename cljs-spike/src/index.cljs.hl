@@ -6,17 +6,17 @@
 
 (def depth-map (depth-map-cell))
 
-(defc= average-depth
-  (when depth-map
-    (/ (reduce + depth-map) (count depth-map))))
+; (defc= average-depth
+;   (when depth-map
+;     (/ (reduce + depth-map) (count depth-map))))
 
 (defc= closest-depth
   (when depth-map
     (apply min (filter (partial not= 2047) depth-map))))
 
-(defc= reverse-depth
-  (when closest-depth
-    (- 1100 closest-depth)))
+; (defc= reverse-depth
+;   (when closest-depth
+;     (- 1100 closest-depth)))
 
 (def sq (m/osc :type :square))
 (def tri (m/osc :type :triangle))
@@ -26,10 +26,10 @@
     (title "♫♫♫•dimo•music•♫♫♫"))
   (body
     (h1 "dimo music!")
-    (button :click #(m/play-note tri {:pitch @reverse-depth}) "click")
-    (p (text "average depth: ~{average-depth}"))
+    ; (button :click #(m/play-note tri {:pitch @reverse-depth}) "click")
+    ; (p (text "average depth: ~{average-depth}"))
     (p (text "closest depth: ~{closest-depth}"))
-    (p (text "2047 - closest depth: ~{reverse-depth}"))
+    ; (p (text "1100 - closest depth: ~{reverse-depth}"))
 
     (hr)
 
