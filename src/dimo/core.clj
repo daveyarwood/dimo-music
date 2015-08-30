@@ -35,7 +35,6 @@
     (recur)))
 
 (defn -main []
-  (sound/set-up!)
   (with-open [client (client/create-client)]
     (let [depths (kinect/depth-stream client url)]
       (bass-loop depths))))
