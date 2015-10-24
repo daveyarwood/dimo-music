@@ -11,7 +11,7 @@
                     [adzerk/boot-cljs          "0.0-3308-0"]
                     [tailrecursion/boot-hoplon "0.1.0"]
                     [tailrecursion/hoplon      "6.0.0-SNAPSHOT"]
-                    [mantra                    "0.3.1"]])
+                    [mantra                    "0.5.1"]])
 
 (require
   '[clojure.java.io :as io]

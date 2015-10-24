@@ -38,25 +38,25 @@
     (p
       (text "square:")
       (button :click #(m/play-note sq {:pitch (+ 100 (rand-int 3000))
-                                       :duration 1000}) 
+                                       :duration 1000})
               "random note")
       (button :click #(m/stop-osc sq) "off"))
 
-    (p 
+    (p
       (text "triangle:")
       (button :click #(m/play-note tri {:pitch (+ 100 (rand-int 3000))
-                                        :duration 1000}) 
+                                        :duration 1000})
               "random note")
-      (button :click #(m/play-notes tri [{:pitch 100 :duration 1000}
-                                         {:duration 250}
-                                         {:pitch 200 :duration 1000}
-                                         {:duration 250}
-                                         {:pitch 300 :duration 1000}
-                                         {:duration 250}
-                                         {:pitch 400 :duration 1000}])
+      (button :click #(m/play-notes tri [{:pitch 100 :duration :quarter}
+                                         {:duration :sixteenth}
+                                         {:pitch 200 :duration :quarter}
+                                         {:duration :sixteenth}
+                                         {:pitch 300 :duration :quarter}
+                                         {:duration :sixteenth}
+                                         {:pitch 400 :duration :quarter}])
               "note sequence")
       (button :click #(m/stop-osc tri) "off"))
 
-    (p 
+    (p
       (button :click m/stop-all-oscs "stop all oscs"))))
 
